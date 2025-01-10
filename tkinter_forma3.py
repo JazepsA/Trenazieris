@@ -188,6 +188,29 @@ def meklēt_treneri():
     meklēt_btn = tk.Button(logs, text="Meklēt", command=atrast_treneri)
     meklēt_btn.pack(pady=10)
 
+def dzēst_treneri():
+    def dzēst_treneri_no_db():
+        id_trenera = id_trenera_entry.get()
+        if id_trenera.isdigit():
+            cursor.execute("DELETE FROM Treneri WHERE id_trenera = ?", (id_trenera,))
+            conn.commit()
+            messagebox.showinfo("Veiksmīgi", f"Treneris ar ID {id_trenera} tika izdzēsts!")
+            logs.destroy()
+        else:
+            messagebox.showerror("Kļūda", "Lūdzu, ievadiet derīgu ID!")
+
+    logs = tk.Toplevel()
+    logs.title("Dzēst treneri")
+    logs.geometry("300x150")
+
+    tk.Label(logs, text="Trenera ID:").pack()
+    id_trenera_entry = tk.Entry(logs)
+    id_trenera_entry.pack()
+
+    dzēst_btn = tk.Button(logs, text="Dzēst", command=dzēst_treneri_no_db)
+    dzēst_btn.pack(pady=10)
+
+
 
 def treneru_logs():
     treneri_logs = tk.Toplevel()
@@ -200,7 +223,7 @@ def treneru_logs():
     meklēt_btn = tk.Button(treneri_logs, text="Meklēt treneri",command=meklēt_treneri, width=25, height=2, bg="lightgreen")
     meklēt_btn.pack(pady=10)
 
-    dzēst_btn = tk.Button(treneri_logs, text="Dzēst treneri", width=25, height=2, bg="lightyellow")
+    dzēst_btn = tk.Button(treneri_logs, text="Dzēst treneri",command=dzēst_treneri, width=25, height=2, bg="lightyellow")
     dzēst_btn.pack(pady=10)
 
     iziet_btn = tk.Button(treneri_logs, text="Iziet", command=treneri_logs.destroy, width=25, height=2, bg="red", fg="white")
@@ -212,6 +235,7 @@ def izveidot_galveno_logu():
 
     def treneri_poga():
         treneru_logs()
+    
 
     def apmeklejumi_poga():
         messagebox.showinfo("Apmeklējumi", "Atvērta apmeklējumu pārvaldība.")
